@@ -1,0 +1,105 @@
+//UC1
+
+mysql> CREATE DATABASE payroll_service;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| address_book       |
+| information_schema |
+| mysql              |
+| payroll_service    |
+| performance_schema |
+| school             |
+| student            |
+| sys                |
++--------------------+
+8 rows in set (0.00 sec)
+
+mysql> USE payroll_service;
+Database changed
+
+// UC2
+
+mysql> CREATE TABLE Employee_payroll(
+    -> id INT AUTO_INCREMENT PRIMARY KEY,
+    -> name VARCHAR(255) NOT NULL,
+    -> salary INT NOT NULL,
+    -> start_date DATE NOT NULL);
+Query OK, 0 rows affected (0.02 sec)
+
+//UC3
+
+mysql> INSERT INTO Employee_payroll
+    -> (id,name,salary,start_date)
+    -> VALUES
+    -> (2110992157, "Himanshi" , 20000 , '2024-04-01'),
+    -> (2110992017 ,"Rahul" , 30000 , '2024-05-01'),
+    -> (2110991043 ,"Prashant" , 25000 , '2024-03-01');
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+//UC4
+
+mysql> SELECT * FROM Employee_payroll;
++------------+----------+--------+------------+
+| id         | name     | salary | start_date |
++------------+----------+--------+------------+
+| 2110991043 | Prashant |  25000 | 2024-03-01 |
+| 2110992017 | Rahul    |  30000 | 2024-05-01 |
+| 2110992157 | Himanshi |  20000 | 2024-04-01 |
++------------+----------+--------+------------+
+3 rows in set (0.00 sec)
+
+
+//UC5
+
+mysql> SELECT salary FROM Employee_payroll WHERE name = "Prashant";
++--------+
+| salary |
++--------+
+|  25000 |
++--------+
+1 row in set (0.00 sec)
+
+mysql> SELECT * FROM Employee_payroll WHERE  start_date BETWEEN CAST('2024-04-15' AS DATE) AND DATE(NOW());
++------------+-------+--------+------------+
+| id         | name  | salary | start_date |
++------------+-------+--------+------------+
+| 2110992017 | Rahul |  30000 | 2024-05-01 |
++------------+-------+--------+------------+
+1 row in set (0.00 sec)
+
+
+//UC6
+
+mysql> ALTER TABLE Employee_payroll 
+    -> ADD COLUMN geneder varchar(10);
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> UPDATE Employee_payroll 
+    -> SET geneder = 'M'
+    -> WHERE name = "Rahul" or name = "Prashant";
+Query OK, 2 rows affected (0.01 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+mysql> UPDATE Employee_payroll
+    -> SET geneder = 'F'
+    -> WHERE name = "Himanshi";
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+//UC7
+
+mysql> SELECT SUM(salary) FROM Employee_payroll
+    -> WHERE geneder = 'M' 
+    -> GROUP BY geneder;
++-------------+
+| SUM(salary) |
++-------------+
+|       55000 |
++-------------+
+1 row in set (0.00 sec)
+
